@@ -21,7 +21,7 @@ const LoginScreen = () => {
         <OtherOtionsView />
         <LoginBtn />
         <LogInWithView />
-        <SocialLoginBtn></SocialLoginBtn>
+        <SocialLoginBtn />
       </View>
     </ScrollView>
   );
@@ -92,16 +92,21 @@ const LogInWithView = () => (
 );
 
 const SocialLoginBtn = () => (
-    <View style={styles.logInWithView}>
-    <TouchableOpacity><Image style={styles.fbBtn}
-    source={require('../../Assets/Registration/fbLogin.png')}
-    ></Image></TouchableOpacity>
-    <TouchableOpacity><Image style={styles.fbBtn}
-    source={require('../../Assets/Registration/instaLogin.png')}
-    ></Image></TouchableOpacity>
-    </View>
-
-)
+  <View style={styles.logInWithView}>
+    <TouchableOpacity>
+      <Image
+        style={styles.fbBtn}
+        source={require('../../Assets/Registration/fbLogin.png')}
+      />
+    </TouchableOpacity>
+    <TouchableOpacity>
+      <Image
+        style={styles.fbBtn}
+        source={require('../../Assets/Registration/instaLogin.png')}
+      />
+    </TouchableOpacity>
+  </View>
+);
 
 const styles = StyleSheet.create({
   container: {},
@@ -172,17 +177,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(103, 103, 103, 0.4)',
     marginHorizontal: 10,
   },
-  socialLoginView:{
-          alignItems: 'center',
-              justifyContent: 'center',
-
-
+  socialLoginView: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  fbBtn:{
-width:60,
-aspectRatio:1,
-              margin:10
-
-  }
+  fbBtn: {
+    width: 60,
+    aspectRatio: 1,
+    margin: 10,
+  },
 });
 export default LoginScreen;
