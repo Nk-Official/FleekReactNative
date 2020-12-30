@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
+  SafeAreaView,
   StyleSheet,
   ScrollView,
   View,
@@ -7,32 +8,36 @@ import {
   Image,
   TextInput,
   Dimensions,
-  Button,
   TouchableOpacity,
 } from 'react-native';
 import CustomButton from '../../Helper/Button/CustomButton';
+import RegistrationHeaderImage from './CommonScreens/RegistrationHeaderImage';
+import InputViews from './CommonScreens/InputViews';
 
-const LoginScreen = () => {
-  return (
-    <ScrollView>
-      <View style={styles.container}>
-        <HeaderImage />
-        <EmailPasswordContainer />
-        <OtherOtionsView />
-        <LoginBtn />
-        <LogInWithView />
-        <SocialLoginBtn />
-      </View>
-    </ScrollView>
-  );
-};
+const screenHeight = Dimensions.get('window').height;
 
-const HeaderImage = () => {
+const LoginScreen = ({navigation}) => {
+  // const [contentHeight,setContentHeight] = useState(0)
+  const [scrollEnable, setScrollEnable] = useState(false);
   return (
-    <Image
-      style={styles.headerImage}
-      source={require('../../Assets/Registration/Mask_Group.png')}
-    />
+    <SafeAreaView>
+      <ScrollView
+        scrollEnable={scrollEnable}
+        onContentSizeChange={(w, h) => {
+          console.log('height of content change', w, h);
+          const scroll = screenHeight < h;
+          setScrollEnable(scroll);
+        }}>
+        <View style={styles.container}>
+          <RegistrationHeaderImage />
+          <EmailPasswordContainer />
+          <OtherOtionsView navigation={navigation} />
+          <LoginBtn />
+          <LogInWithView />
+          <SocialLoginBtn />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -60,11 +65,19 @@ const TextView = ({imagePath, placeholder}) => {
   );
 };
 
-const OtherOtionsView = () => (
+const OtherOtionsView = (props) => (
   <View style={styles.otherOptContainerView}>
     <View style={{flexDirection: 'row', alignItems: 'center'}}>
       <Text>Don't have a account? </Text>
-      <CustomButton title="Sign up" fontSize={14} color="#259CFB" />
+      <CustomButton
+        title="Sign up"
+        fontSize={14}
+        color="#259CFB"
+        onPress={() => {
+          console.log(props.navigation);
+          props.navigation.navigate('signup');
+        }}
+      />
     </View>
     <View>
       <CustomButton title="Forgot Password" fontSize={12} color="#259CFB" />
@@ -92,8 +105,8 @@ const LogInWithView = () => (
 );
 
 const SocialLoginBtn = () => (
-  <View style={styles.logInWithView}>
-    <TouchableOpacity>
+  <View style={styles.socialLoginView}>
+    <TouchableOpacity onPress={() => console.log('fbloginn button')}>
       <Image
         style={styles.fbBtn}
         source={require('../../Assets/Registration/fbLogin.png')}
@@ -112,12 +125,7 @@ const styles = StyleSheet.create({
   container: {},
 
   headerImageView: {},
-  headerImage: {
-    resizeMode: 'contain',
-    height: Dimensions.get('window').height / 2.7,
-    width: '100%',
-    // flex: 1,
-  },
+
   emailPasswordContainer: {
     marginTop: 20,
   },
@@ -178,8 +186,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   socialLoginView: {
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    marginVertical: 20,
   },
   fbBtn: {
     width: 60,

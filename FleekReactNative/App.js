@@ -25,14 +25,17 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 import LoginScreen from './ReactNative/Screens/Registration/LoginScreen';
+import LoginNavigation from './ReactNative/Screens/Registration/Navigation/LoginNavigation';
+import DishApp from './DishApp/DishApp';
 
 const App: () => React$Node = () => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <LoginScreen></LoginScreen>
-      </SafeAreaView>
+      {/* <SafeAreaView> */}
+      <LoginNavigation />
+      {/* </SafeAreaView> */}
+      {/* <DishApp></DishApp> */}
     </>
   );
 };
