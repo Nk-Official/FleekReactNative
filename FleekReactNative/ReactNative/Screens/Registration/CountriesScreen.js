@@ -28,14 +28,19 @@ const countries = [
   },
 ];
 
-const CountriesScreen = () => {
-  const [selectedCountry, setCountry] = useState('India');
+const CountriesScreen = ({navigation}) => {
+  const [selectedCountry, setCountry] = useState('');
 
   return (
     <View style={{flex: 1}}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Country List</Text>
-        <Button title="Done" color="white" style={styles.headerDoneBtn} />
+        <Button
+          title="Done"
+          color="white"
+          style={styles.headerDoneBtn}
+          onPress={() => navigation.pop()}
+        />
       </View>
       <FlatList
         data={countries}
@@ -46,6 +51,7 @@ const CountriesScreen = () => {
             onPress={() => {
               setCountry(item.name);
             }}
+            countrySelected={selectedCountry}
           />
         )}
       />
@@ -53,9 +59,8 @@ const CountriesScreen = () => {
   );
 };
 
-const Cell = ({item, onPress}) => {
+const Cell = ({item, onPress, countrySelected}) => {
   const CheckIcon = ({hide}) => {
-    console.log('check button state', hide);
     if (hide) {
       return null;
     }
@@ -78,7 +83,7 @@ const Cell = ({item, onPress}) => {
           }}>
           <Text style={styles.cellTitle}>{item.name}</Text>
           <Text style={{paddingRight: 10}}>{item.code}</Text>
-          <CheckIcon hide={this.selectedCountry !== item.name} />
+          <CheckIcon hide={countrySelected !== item.name} />
         </View>
 
         <View style={styles.cellLine} />

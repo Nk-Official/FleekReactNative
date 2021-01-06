@@ -24,7 +24,6 @@ const LoginScreen = ({navigation}) => {
       <ScrollView
         scrollEnable={scrollEnable}
         onContentSizeChange={(w, h) => {
-          console.log('height of content change', w, h);
           const scroll = screenHeight < h;
           setScrollEnable(scroll);
         }}>
@@ -32,7 +31,7 @@ const LoginScreen = ({navigation}) => {
           <RegistrationHeaderImage />
           <EmailPasswordContainer />
           <OtherOtionsView navigation={navigation} />
-          <LoginBtn />
+          <LoginBtn navigation={navigation} />
           <LogInWithView />
           <SocialLoginBtn />
         </View>
@@ -85,9 +84,12 @@ const OtherOtionsView = (props) => (
   </View>
 );
 
-const LoginBtn = () => (
+const LoginBtn = ({navigation}) => (
   <View style={styles.signInBtnView}>
-    <TouchableOpacity>
+    <TouchableOpacity onPress={()=>{
+      console.log('press')
+      navigation.navigate('home')
+    }}>
       <Image
         style={styles.signInBtn}
         source={require('../../Assets/Registration/arrowRedCircle.png')}

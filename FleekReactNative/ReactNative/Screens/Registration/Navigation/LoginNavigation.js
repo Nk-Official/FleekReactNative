@@ -7,6 +7,7 @@ import SignUpScreen from '../SignUpScreen';
 import CountriesScreen from '../CountriesScreen';
 import {enableScreens} from 'react-native-screens';
 import {createNativeStackNavigator} from 'react-native-screens/native-stack';
+import TabBarControl from '../../AppInside/Tab/TabbarSet';
 
 enableScreens();
 
@@ -19,6 +20,7 @@ const LoginNavigation = () => {
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name="login" component={LoginScreen} />
         <Stack.Screen name="signup" component={SignUpNavigate} />
+        <Stack.Screen name="home" component={TabBarControl} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -27,6 +27,7 @@ import {
 import LoginScreen from './ReactNative/Screens/Registration/LoginScreen';
 import LoginNavigation from './ReactNative/Screens/Registration/Navigation/LoginNavigation';
 import DishApp from './DishApp/DishApp';
+import Dummy from './ReactNative/Screens/Dummy'
 
 const App: () => React$Node = () => {
   return (
@@ -36,6 +37,7 @@ const App: () => React$Node = () => {
       <LoginNavigation />
       {/* </SafeAreaView> */}
       {/* <DishApp></DishApp> */}
+      {/* <Dummy></Dummy> */}
     </>
   );
 };
