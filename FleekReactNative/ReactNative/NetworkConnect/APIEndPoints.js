@@ -1,6 +1,8 @@
 const APIEndPoints = {
   salons: 'salons',
-  baseurl: BaseUrl,
+  deals: 'deals',
+  categories: 'categories',
+  baseurl: 'https://demo.softprodigyphp.in/Fleek/public/api/v1/',
 };
 const BaseUrl = 'https://demo.softprodigyphp.in/Fleek/public/api/v1/';
 

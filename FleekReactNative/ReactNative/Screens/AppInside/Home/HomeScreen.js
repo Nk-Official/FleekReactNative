@@ -6,15 +6,18 @@ import {
   Button,
   ScrollView,
   FlatList,
+  Dimensions,
+  ImageBackground,
+  StyleSheet,
 } from 'react-native';
 import {Theme} from '../../../Utility/Theme';
 // import {Icon as Icon1} from 'react-native-vector-icons/Entypo';
 // import Icon  from 'react-native-vector-icons/Entypo';
 import Icon1 from 'react-native-vector-icons/Entypo';
-
 import Icon2 from 'react-native-vector-icons/FontAwesome';
-
 import HomeScreenViewModel from './HomeScreenViewModel';
+import {CalculatorDiscountPercentage} from '../../../Utility/Calculator';
+import DealsFlatList from './DealsFlatList';
 
 const HomeScreen = () => {
   const [result, model] = HomeScreenViewModel();
@@ -68,12 +71,14 @@ const HomeScreen = () => {
         </View>
       </View>
 
-      <View style={{marginTop: '15%'}}>
+      <View style={{marginTop: '15%', flex: 0.04}}>
         <FilterView />
       </View>
-      <ScrollView>
-        <NearYou json={result} />
-      </ScrollView>
+      <View style={{flex: 0.71}}>
+        <ScrollView style={{flex: 1}}>
+          <NearYou json={result} />
+        </ScrollView>
+      </View>
     </View>
   );
 };
@@ -111,9 +116,34 @@ const DropDown = (props) => {
 };
 
 const NearYou = ({json}) => {
+  if (json === undefined) {
+    return null;
+  }
+  const dataAPi = json.data;
+  const salons = dataAPi.data;
+  if (salons === undefined) {
+    return null;
+  }
+  const totalItemWidth = Dimensions.get('window').width - 40;
   return (
     <View>
-      <FlatList />
+      <Text
+        style={{
+          fontSize: 18,
+          fontWeight: 'bold',
+          marginLeft: 20,
+          marginTop: 12,
+        }}>
+        Salons near you
+      </Text>
+      <FlatList
+        data={salons}
+        keyExtractor={(item) => item.id}
+        renderItem={DealsFlatList}
+        horizontal={true}
+        pagingEnabled={true}
+        showsHorizontalScrollIndicator={false}
+      />
     </View>
   );
 };

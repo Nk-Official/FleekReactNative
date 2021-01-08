@@ -3,21 +3,21 @@ import {APIEndPoints, BaseUrl} from '../../../NetworkConnect/APIEndPoints';
 import {ApiHit} from '../../../NetworkConnect/APIHit';
 
 export default () => {
-  const [results, setResults] = useState([]);
-  const HomeScreenViewModel = () => {
+  const [results, setResults] = useState();
+  const salonsApi = async () => {
     const params = {lat: 49.2501, lng: -123.0824, per_page: 10, page: 1};
     // const [endpoint, baseurl] = APIEndPoints()
-    console.log('inside HomeScreenViewModel', APIEndPoints.salons);
-
-    ApiHit.get(APIEndPoints.salons, {
+    console.log('home screen view model', APIEndPoints.deals, BaseUrl)
+    await ApiHit.get(APIEndPoints.deals, {
       params: params,
       // headers: {
       //   'device-token': 'ccnsnamncnnsnmcsmcncmnnccmdnsmn',
       // },
     })
       .then(function (response) {
-        console.log('response');
-        console.log(response);
+        // console.log('response');
+        // console.log(response);
+        setResults(response);
       })
       .catch(function (error) {
         console.log('result');
@@ -26,9 +26,8 @@ export default () => {
       });
   };
   useEffect(() => {
-    console.log('component mount')
-    HomeScreenViewModel();
+    salonsApi();
   }, []);
 
-  return [results, HomeScreenViewModel];
+  return [results, salonsApi];
 };
