@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState, useCallback} from 'react';
 import {
   Text,
   TextInput,
@@ -11,16 +11,14 @@ import {
   StyleSheet,
 } from 'react-native';
 import {Theme} from '../../../Utility/Theme';
-// import {Icon as Icon1} from 'react-native-vector-icons/Entypo';
-// import Icon  from 'react-native-vector-icons/Entypo';
 import Icon1 from 'react-native-vector-icons/Entypo';
 import Icon2 from 'react-native-vector-icons/FontAwesome';
 import HomeScreenViewModel from './HomeScreenViewModel';
-import {CalculatorDiscountPercentage} from '../../../Utility/Calculator';
 import DealsFlatList from './DealsFlatList';
-
+import PageControl from 'react-native-page-control';
+import SalonCell from './SalonCell';
 const HomeScreen = () => {
-  const [result, model] = HomeScreenViewModel();
+  const [deals, salons] = HomeScreenViewModel();
 
   return (
     <View style={{flex: 1}}>
@@ -41,22 +39,7 @@ const HomeScreen = () => {
           </View>
           <View
             // eslint-disable-next-line react-native/no-inline-styles
-            style={{
-              backgroundColor: 'white',
-              height: '50%',
-              width: '100%',
-              marginTop: '3%',
-              borderRadius: 10,
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 2,
-                height: 2,
-              },
-              shadowOpacity: 0.2,
-              shadowRadius: 5,
-              justifyContent: 'center',
-              flexDirection: 'row',
-            }}>
+            style={styles.searchView}>
             <TextInput
               placeholder="Search for salon and service"
               style={{marginLeft: 10, width: '80%', marginRight: 10}}
@@ -76,7 +59,8 @@ const HomeScreen = () => {
       </View>
       <View style={{flex: 0.71}}>
         <ScrollView style={{flex: 1}}>
-          <NearYou json={result} />
+          <SalonsList json={salons} />
+          <NearYou json={deals} />
         </ScrollView>
       </View>
     </View>
@@ -120,8 +104,14 @@ const NearYou = ({json}) => {
     return null;
   }
   const dataAPi = json.data;
-  const salons = dataAPi.data;
-  if (salons === undefined) {
+  const deals = dataAPi.data;
+  const [currentPage, setCurrentPage] = useState(0);
+  const _onViewableItemsChanged = useCallback(({viewableItems, changed}) => {
+    const d = viewableItems; // viewableItems[0].index
+    setCurrentPage(d[0].index);
+  }, []);
+
+  if (deals === undefined) {
     return null;
   }
   const totalItemWidth = Dimensions.get('window').width - 40;
@@ -137,15 +127,91 @@ const NearYou = ({json}) => {
         Salons near you
       </Text>
       <FlatList
-        data={salons}
-        keyExtractor={(item) => item.id}
+        data={deals}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={DealsFlatList}
         horizontal={true}
         pagingEnabled={true}
         showsHorizontalScrollIndicator={false}
+        onScroll={() => {
+          // console.log('scroll');
+        }}
+        onEndReached={() => {
+          // console.log('onEndReached');
+        }}
+        // onScrollEndDrag={(props) => {
+        //   const offsetX = props.nativeEvent.contentOffset.x;
+        //   const index = offsetX / (Dimensions.get('window').width - 40);
+
+        //   // console.log('onScrollEndDrag', index);
+        // }}
+        // onViewableItemsChanged={({viewableItems, changed}) => {
+        //   console.log('onViewableItemsChanged', viewableItems, changed);
+        // }}
+        onViewableItemsChanged={_onViewableItemsChanged}
+      />
+      <PageControlNearBy
+        numberOfPages={deals.length}
+        currentPage={currentPage}
       />
     </View>
   );
 };
+
+const PageControlNearBy = (props) => {
+  return (
+    <PageControl
+      style={{margin: 20, alignSelf: 'flex-start'}}
+      numberOfPages={props.numberOfPages}
+      currentPage={props.currentPage}
+      hidesForSinglePage
+      pageIndicatorTintColor="gray"
+      currentPageIndicatorTintColor={Theme.primary}
+      indicatorStyle={{borderRadius: 5}}
+      currentIndicatorStyle={{borderRadius: 5}}
+      indicatorSize={{width: 8, height: 8}}
+      // onPageIndicatorPress={this.onItemTap}
+    />
+  );
+};
+
+const SalonsList = ({json}) => {
+  // const responseData = json.data;
+  console.log('salons api response', json);
+  if (json === undefined) {
+    return null;
+  }
+  const salonsData = json.data.data.salons;
+  if (salonsData === undefined) {
+    return null;
+  }
+  console.log('reach salons list', salonsData.length);
+  return (
+    <FlatList
+      data={salonsData}
+      keyExtractor={(item) => item.id.toString()}
+      renderItem={SalonCell}
+    />
+  );
+};
+
+const styles = StyleSheet.create({
+  searchView: {
+    backgroundColor: 'white',
+    height: '50%',
+    width: '100%',
+    marginTop: '3%',
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 2,
+      height: 2,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+});
 
 export default HomeScreen;

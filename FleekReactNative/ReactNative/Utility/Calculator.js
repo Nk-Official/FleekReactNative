@@ -6,7 +6,7 @@ const CalculatorDiscountPercentage = (actualPrice, offerPrice) => {
     return null;
   }
   let difference = offerPrice - actualPrice;
-  console.log('difference calculaated', actualPrice, offerPrice, difference);
+  // console.log('difference calculaated', actualPrice, offerPrice, difference);
   if (difference < 0) {
     difference = -1 * difference;
   }
