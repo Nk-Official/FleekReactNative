@@ -7,8 +7,8 @@ import {
   ScrollView,
   FlatList,
   Dimensions,
-  ImageBackground,
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 import {Theme} from '../../../Utility/Theme';
 import Icon1 from 'react-native-vector-icons/Entypo';
@@ -17,9 +17,13 @@ import HomeScreenViewModel from './HomeScreenViewModel';
 import DealsFlatList from './DealsFlatList';
 import PageControl from 'react-native-page-control';
 import SalonCell from './SalonCell';
+import FilterList from './FilterList';
+
+let FilterYPosition = 0;
+
 const HomeScreen = () => {
   const [deals, salons] = HomeScreenViewModel();
-
+  const [showFilter, setShowFilter] = useState(false);
   return (
     <View style={{flex: 1}}>
       <View style={{backgroundColor: Theme.primary, flex: 0.13}}>
@@ -55,14 +59,18 @@ const HomeScreen = () => {
       </View>
 
       <View style={{marginTop: '15%', flex: 0.04}}>
-        <FilterView />
+        <FilterView
+        // ref={(view) => {
+        //   this.filterView = view;
+        // }}
+        // onLayout={() => {}}
+        />
       </View>
       <View style={{flex: 0.71}}>
-        <ScrollView style={{flex: 1}}>
-          <SalonsList json={salons} />
-          <NearYou json={deals} />
-        </ScrollView>
+        <SalonsList json={salons} />
+        <NearYou json={deals} />
       </View>
+      <FilterViewShow />
     </View>
   );
 };
@@ -75,42 +83,57 @@ const FilterView = () => {
         justifyContent: 'space-around',
         height: 30,
         alignItems: 'center',
-      }}>
-      <DropDown title="Category" />
+      }}
+      // ref={(view) => {
+      //   this.filterView = view;
+      // }}
+      // onLayout={(event) => {
+      //   handleLayoutChange();
+      // }}
+      >
+      <DropDown title="Category" onPress={() => {}} />
       <DropDown title="Location" />
       <DropDown title="Rating" />
     </View>
   );
 };
-
+function handleLayoutChange() {
+  this.filterView.measure((fx, fy, width, height, px, py) => {
+    FilterYPosition = fy;
+  });
+}
 const DropDown = (props) => {
   return (
-    <View style={{flexDirection: 'row'}}>
-      <Text style={{marginRight: 5, fontSize: 17, fontWeight: '300'}}>
-        {props.title}
-      </Text>
-      <Icon2
-        name="caret-down"
-        size={20}
-        color="black"
-        style={{alignSelf: 'center'}}
-      />
-    </View>
+    <TouchableOpacity
+      onPress={() => {
+        props.onPress();
+      }}>
+      <View style={{flexDirection: 'row'}}>
+        <Text style={{marginRight: 5, fontSize: 17, fontWeight: '300'}}>
+          {props.title}
+        </Text>
+        <Icon2
+          name="caret-down"
+          size={20}
+          color="black"
+          style={{alignSelf: 'center'}}
+        />
+      </View>
+    </TouchableOpacity>
   );
 };
 
 const NearYou = ({json}) => {
-  if (json === undefined) {
-    return null;
-  }
-  const dataAPi = json.data;
-  const deals = dataAPi.data;
   const [currentPage, setCurrentPage] = useState(0);
   const _onViewableItemsChanged = useCallback(({viewableItems, changed}) => {
     const d = viewableItems; // viewableItems[0].index
     setCurrentPage(d[0].index);
   }, []);
-
+  if (json === undefined) {
+    return null;
+  }
+  const dataAPi = json.data;
+  const deals = dataAPi.data;
   if (deals === undefined) {
     return null;
   }
@@ -191,6 +214,20 @@ const SalonsList = ({json}) => {
       data={salonsData}
       keyExtractor={(item) => item.id.toString()}
       renderItem={SalonCell}
+    />
+  );
+};
+
+const FilterViewShow = () => {
+  return (
+    <View
+      style={{
+        position: 'absolute',
+        width: 300,
+        height: FilterYPosition,
+        marginTop: 300,
+        backgroundColor: 'red',
+      }}
     />
   );
 };

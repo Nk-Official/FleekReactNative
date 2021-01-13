@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {Text, View} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
+// import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import HomeScreen from "../Home/HomeScreen";
-
+import HomeScreen from '../Home/HomeScreen';
+import AppointmentScreen from '../Appointment/AppointmentScreen';
 
 function SettingsScreen() {
   return (
@@ -66,7 +66,7 @@ export default function TabBarControl() {
         },
       }}>
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Appointments" component={SettingsScreen} />
+      <Tab.Screen name="Appointments" component={AppointmentScreen} />
       <Tab.Screen name="Profile" component={SettingsScreen} />
       <Tab.Screen name="Favorites" component={SettingsScreen} />
     </Tab.Navigator>

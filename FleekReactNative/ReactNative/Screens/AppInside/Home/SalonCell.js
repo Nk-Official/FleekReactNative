@@ -9,13 +9,23 @@ const SalonCell = ({item}) => {
     <View style={style.container}>
       <Image
         source={require('../../../Assets/Home/salonPlaceholder.png')}
-        style={{height: 150, resizeMode: 'contain'}}
+        style={{
+          height: 150,
+          resizeMode: 'cover',
+          width: '100%',
+          borderTopRightRadius: 20,
+          borderTopLeftRadius: 20,
+        }}
       />
-      <View style={{backgroundColor: 'white', padding: 10}}>
+      <View
+        style={{
+          padding: 10,
+          borderBottomRightRadius: 20,
+          borderBottomLeftRadius: 20,
+          backgroundColor: 'white'
+        }}>
         <Text>{item.tag_line}</Text>
         <Text style={{fontSize: 20, fontWeight: 'bold'}}>{item.name}</Text>
-
-        {/* <Text>{item.location}</Text> */}
         <LocationView location={item.location} />
         <RatingView rating={item.rating} count={item.userCount} />
       </View>
@@ -34,16 +44,8 @@ const LocationView = (props) => {
 
 const RatingView = (props) => {
   return (
-    <View style={{flexDirection: 'row', marginTop: 15, alignItems: 'center'}}>
-      <View
-        style={{
-          backgroundColor: Theme.primary,
-          borderRadius: 5,
-          flexDirection: 'row',
-          padding: 4,
-          marginRight: 8,
-          alignItems: 'center',
-        }}>
+    <View style={style.ratingViewContainer}>
+      <View style={style.ratingView}>
         <Icon name="star" color="#fff" size={15} />
         <Text style={{color: '#fff', marginLeft: 5}}>{props.rating}</Text>
       </View>
@@ -55,9 +57,10 @@ const RatingView = (props) => {
 const style = StyleSheet.create({
   container: {
     width: Dimensions.get('window').width - 40,
+    backgroundColor: 'transparent',
     // height: 200,
     margin: 20,
-    borderRadius: 10,
+    borderRadius: 20,
     shadowColor: '#000',
     shadowOffset: {
       width: 2,
@@ -66,6 +69,19 @@ const style = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 10,
     // overflow: 'hidden'
+  },
+  ratingViewContainer: {
+    flexDirection: 'row',
+    marginTop: 15,
+    alignItems: 'center',
+  },
+  ratingView: {
+    backgroundColor: Theme.primary,
+    borderRadius: 5,
+    flexDirection: 'row',
+    padding: 4,
+    marginRight: 8,
+    alignItems: 'center',
   },
 });
 
