@@ -18,6 +18,7 @@
     "axios": "^0.21.1",
     "react": "16.13.1",
     "react-native": "0.63.4",
+    "react-native-draggable-dynamic-flatlist": "^1.0.4",
     "react-native-gesture-handler": "^1.9.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.3",
     "react-native-page-control": "^1.1.2",

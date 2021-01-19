@@ -28,16 +28,17 @@ import LoginScreen from './ReactNative/Screens/Registration/LoginScreen';
 import LoginNavigation from './ReactNative/Screens/Registration/Navigation/LoginNavigation';
 import DishApp from './DishApp/DishApp';
 import Dummy from './ReactNative/Screens/Dummy'
-
+import MapScreen from "./ReactNative/YITA/MapScreen";
 const App: () => React$Node = () => {
   return (
     <>
       <StatusBar barStyle="dark-content" />
       {/* <SafeAreaView> */}
-      <LoginNavigation />
+      {/* <LoginNavigation /> */}
       {/* </SafeAreaView> */}
       {/* <DishApp></DishApp> */}
       {/* <Dummy></Dummy> */}
+      <MapScreen></MapScreen>
     </>
   );
 };
