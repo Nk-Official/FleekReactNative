@@ -16,7 +16,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon1 from 'react-native-vector-icons/Entypo';
 
 import {ThemeStyle} from './ThemeStyle';
-import ItineraryList from '../YITA/FlatList/ItineraryList';
+import ItneraryListSec from '../YITA/FlatList/ItneraryListSec';
 // import MapView from 'react-native-maps';
 
 const MapScreen = () => {
@@ -63,7 +63,7 @@ const ItinarymapView = () => {
   return (
     <View style={{flex: 0.5, backgroundColor: 'white'}}>
       <SegmentView />
-      <ItineraryList />
+      <ItneraryListSec />
     </View>
   );
 };
