@@ -14,18 +14,18 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon1 from 'react-native-vector-icons/Entypo';
-
 import {ThemeStyle} from './ThemeStyle';
-import ItneraryListSec from '../YITA/FlatList/ItneraryListSec';
+import ItneraryListThird from '../YITA/FlatList/ItneraryListFourth';
 // import MapView from 'react-native-maps';
-
+import MapMarker from './MapMarker';
 const MapScreen = () => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <HeaderView />
       <SetMapView />
       <ItinarymapView />
-      <FloatingButton />
+      {/* <FloatingButton /> */}
+      {/* <MapMarker title='Victors kitchen' subtitle='6:00 pm' number='4'></MapMarker> */}
     </SafeAreaView>
   );
 };
@@ -63,7 +63,7 @@ const ItinarymapView = () => {
   return (
     <View style={{flex: 0.5, backgroundColor: 'white'}}>
       <SegmentView />
-      <ItneraryListSec />
+      <ItneraryListThird />
     </View>
   );
 };
@@ -112,26 +112,6 @@ const Segment = (props) => {
       }}>
       <Text style={textStyle}>{props.title}</Text>
       <View style={lineStyle} />
-    </TouchableOpacity>
-  );
-};
-
-const FloatingButton = () => {
-  return (
-    <TouchableOpacity style={{position: 'absolute', width: 60, height: 60, bottom: 30,
-          right: 30,}}>
-      <View
-        style={{
-          backgroundColor: '#CABBE9',
-          width: 60,
-          height: 60,
-          alignItems: 'center',
-          justifyContent: 'center',
-          borderRadius: 10,
-        }}
-      >
-        <Icon1 name='plus' size={26} color='white'></Icon1>
-      </View>
     </TouchableOpacity>
   );
 };
