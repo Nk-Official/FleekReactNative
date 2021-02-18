@@ -16,7 +16,8 @@ const DoneButton = (props) => {
         backgroundColor: '#fff',
         alignItems: 'flex-end',
       }}>
-      <TouchableOpacity onPress={()=>{props.onPress}}>
+      <TouchableOpacity onPress={()=>{
+        props.onPress()}}>
         <View
           style={{
             // position: 'absolute',

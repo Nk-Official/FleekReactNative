@@ -55,7 +55,7 @@ const LineImageView = () => {
   let walkingman = '../../Assets/YITA/directions_walk_24px.png';
 
   let circle = {width: 12, height: 12};
-  let line = {height: 40, width: 2, resizeMode: 'cover'};
+  let line = {height: 50, width: 2, resizeMode: 'cover'};
   let man = {
     width: 26,
     height: 26,

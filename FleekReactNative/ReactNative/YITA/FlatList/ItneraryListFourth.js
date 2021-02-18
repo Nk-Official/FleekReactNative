@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   ScrollView,
@@ -7,6 +7,7 @@ import {
   FlatList,
   Animated,
   Text,
+  NativeModules
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {ThemeStyle} from '../ThemeStyle';
@@ -17,6 +18,8 @@ import ItenaryCell from './ItenaryCell';
 import LineFlatList from './ItenaryLineFlatList';
 import {DoneButton, FloatingButton} from './DoneButton';
 import SeperatorView from './SeperatorView';
+import { DataSourceArray } from "../../Utility/DataSourceArray";
+
 // const CellItemContext = React.createContext('');
 const seperators = ['4:00', '6:00', 'third seperator'];
 const heightOfItenaryCell = [];
@@ -25,63 +28,8 @@ let upAnimation = new Animated.Value(0);
 let downAnimation = new Animated.Value(0);
 
 const ItneraryListFourth = () => {
-  const [Data, setData] = useState([
-    {
-      key: 1,
-      time: '2:00 pm',
-      name: '1. National Design Centre',
-      address: '111 Middle Rd, Singapore 188969',
-      timing: '9:00am - 9:00pm',
-      type: ['Art & museums', 'Culture', 'Family'],
-      imagePath: '../../Assets/YITA/cake.png',
-      info:
-        'The National Design Centre (NDC) is the nexus for all things design. This is where designers and businesses congregate to exchange ideas, conduct business...',
-    },
-    {
-      key: 2,
-      time: '4:00 pm',
-      name: '2. National Design Centre',
-      address: '111 Middle Rd, Singapore 188969',
-      timing: '9:00am - 9:00pm',
-      type: ['Art & museums', 'Culture', 'Family'],
-      imagePath: '../../Assets/YITA/cake.png',
-      info:
-        'The National Design Centre (NDC) is the nexus for all things design. This is where designers and businesses congregate to exchange ideas, conduct business...',
-    },
-    {
-      key: 3,
-      time: '6:00 pm',
-      name: '3. National Design Centre',
-      address: '111 Middle Rd, Singapore 188969',
-      timing: '9:00am - 9:00pm',
-      type: ['Art & museums', 'Culture', 'Family'],
-      imagePath: '../../Assets/YITA/cake.png',
-      info:
-        'The National Design Centre (NDC) is the nexus for all things design. This is where designers and businesses congregate to exchange ideas, conduct business...',
-    },
-    {
-      key: 4,
-      time: '6:00 pm',
-      name: '4. National Design Centre',
-      address: '111 Middle Rd, Singapore 188969',
-      timing: '9:00am - 9:00pm',
-      type: ['Art & museums', 'Culture', 'Family'],
-      imagePath: '../../Assets/YITA/cake.png',
-      info:
-        'The National Design Centre (NDC) is the nexus for all things design. This is where designers and businesses congregate to exchange ideas, conduct business...',
-    },
-    {
-      key: 5,
-      time: '6:00 pm',
-      name: '5. National Design Centre',
-      address: '111 Middle Rd, Singapore 188969',
-      timing: '9:00am - 9:00pm',
-      type: ['Art & museums', 'Culture', 'Family'],
-      imagePath: '../../Assets/YITA/cake.png',
-      info:
-        'The National Design Centre (NDC) is the nexus for all things design. This is where designers and businesses congregate to exchange ideas, conduct business...',
-    },
-  ]);
+  
+  const [Data, setData] = useState(DataSourceArray);
 
   const [selectedCell, setSelectedCell] = useState({
     index: -1,
@@ -91,6 +39,13 @@ const ItneraryListFourth = () => {
     up: -1,
     down: -1,
   });
+  function mergeDataWithSeperator(){
+    var keys = [6,7,8,9,10,11,12,13,14,15,16]
+    var result = DataSourceArray.reduce((res, item, index) => res.concat(item, {key:keys[index], type:'seperator'}), []).slice(0, -1);
+    console.log('bcmxbvmnxbcv')
+    console.log(result);
+    setData(result)
+  }
   function cellStyle(index: Int) {
     const selected = index === selectedCell.index;
     let style = {
@@ -169,12 +124,32 @@ const ItneraryListFourth = () => {
   }
 
   function selectCellForSwipe(index, yPosition, cellHeight) {
+    console.log('selectCellForSwipe', yPosition, fullViewHeight)
     setSelectedCell({index: index, y: yPosition, height: cellHeight});
     setCellIndexToAnimate({up: -1, down: -1});
   }
+  useEffect(()=>{
+    mergeDataWithSeperator()
+  }, [])
   const Cell = ({item, index}) => {
+    const componetRef = useRef(null);
+    useEffect(()=>{
+      console.log('useEffect inside cell')
+      if (componetRef !== undefined){
 
-    if (index%2 === 0){
+      
+      // componetRef.measure( (fx, fy, width, height, px, py) => {
+      //       console.log('Component width is: ' + width)
+      //       console.log('Component height is: ' + height)
+      //       console.log('X offset to frame: ' + fx)
+      //       console.log('Y offset to frame: ' + fy)
+      //       console.log('X offset to page: ' + px)
+      //       console.log('Y offset to page: ' + py)
+      //   })        
+      }
+
+    },)
+    if (Data[index].type === 'seperator'){
       return <SeperatorView></SeperatorView>
     }
 
@@ -191,7 +166,9 @@ const ItneraryListFourth = () => {
           onPress={() => {
             //unselect the selected cell
           }}
+          ref={componetRef}
           onLayout={(event) => {
+            // console.log('layout of cell')
             let {x, y, width, height} = event.nativeEvent.layout;
             yOffset = y;
             cellHeight = height;
@@ -200,6 +177,10 @@ const ItneraryListFourth = () => {
             } else if (index === cellIndexToAnimate.down) {
               animateDown(index);
             }
+            const UIManager = require('NativeModules').UIManager;
+                        console.log('cdsjhjdcs', UIManager)
+
+            const handle = React.findNodeHandle(componetRef);
             // if (index === selectedCell.index) {
             //   animateUp(index);
             // }
@@ -214,8 +195,10 @@ const ItneraryListFourth = () => {
 
   const DragUpDownButttn = () => {
     if (selectedCell.index === 0) {
+      console.log('show only down button')
       return <DownScrollButton />;
     } else if (selectedCell.index === Data.length - 1) {
+      console.log('show only up button')
       return <UpScrollButton />;
     } else if (selectedCell.index < 0) {
       return null;
@@ -242,7 +225,7 @@ const ItneraryListFourth = () => {
     const downArrowBtnHeight = 44;
     let yOffset = selectedCell.y;
     let height = selectedCell.height;
-    console.log('calculateYDownArrow', yOffset);
+    console.log('calculateYDownArrow', yOffset, fullViewHeight);
 
     if (downArrowBtnHeight + yOffset + height + 5 > fullViewHeight) {
       return 30;
@@ -253,7 +236,7 @@ const ItneraryListFourth = () => {
   function calculateYUpArrow() {
     const upArrowBtnHeight = 44;
     let yOffset = selectedCell.y;
-    console.log('calculateYUpArrow', yOffset);
+    console.log('calculateYUpArrow', yOffset, fullViewHeight);
 
     if (yOffset - upArrowBtnHeight - 5 < 0) {
       return 30;
@@ -288,8 +271,8 @@ const ItneraryListFourth = () => {
       setData((array) => {
         let data = [...array];
         let temp = data[index];
-        data[index] = data[index - 1];
-        data[index - 1] = temp;
+        data[index] = data[index - 2];
+        data[index - 2] = temp;
         return data;
       });
     });
@@ -334,16 +317,25 @@ const ItneraryListFourth = () => {
     }
     return <FloatingButton />;
   };
+  const BottomDoneButton = () => {
+    if (selectedCell.index === -1) {
+      return null;
+    }
+    return <DoneButton onPress={()=>{
+        selectCellForSwipe(-1, 0, 0);
+    }}></DoneButton>
+  };
 
   return (
     <View
       onLayout={(event) => {
         let {x, y, width, height} = event.nativeEvent.layout;
         fullViewHeight = height;
+        console.log('full view height set', height, fullViewHeight)
       }}>
       <ScrollView>
         <View style={{flexDirection: 'row'}}>
-          <LineFlatList Data={Data} />
+          <LineFlatList Data={DataSourceArray} />
           <FlatList
             extraData={refresh}
             // ItemSeparatorComponent={AView}
@@ -357,9 +349,8 @@ const ItneraryListFourth = () => {
         </View>
       </ScrollView>
       <DragUpDownButttn />
-      <DoneButton onPress={()=>{
-        selectCellForSwipe(-1, 0, 0);
-      }}></DoneButton>
+      <BottomDoneButton></BottomDoneButton>
+      
       <AddButton />
     </View>
   );
