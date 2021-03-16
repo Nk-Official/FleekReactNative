@@ -23,15 +23,16 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import HeaderHome from './Header'
+import HomeScreen from './ReactNative/Screens/Home/HomeScreen'
 
 const App: () => React$Node = () => {
   return (
-    <>
+    <SafeAreaView style={{flex: 1}}>
       <StatusBar barStyle="dark-content" />
-      <HeaderHome />
-    </>
+      <HomeScreen />
+    </SafeAreaView>
   );
 };
+
 
 export default App;
